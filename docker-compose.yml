@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  api_app:
+    container_name: api_app
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    expose:
+      - "8000"
+
+    volumes:
+      - "./app:/app"          
+      - "./data:/app/data"    
+      - "./logs:/app/logs"    
+
+    ports:
+      - "8000:8000" 
+
+    environment:
+      - PYTHONPATH=${PYTHONPATH:-./app}
+      - DB=${DB:-postgresql}
+      - NAMEDB=${NAMEDB:-my_database}
+      - USERDB=${USERDB:-user}
+      - PASSWORDDB=${PASSWORDDB:-changeme}
+      - HOSTDB=${HOSTDB:-localhost}
+      - PORTDB=${PORTDB:-5432}
