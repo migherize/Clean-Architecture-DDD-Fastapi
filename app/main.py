@@ -2,6 +2,7 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.infrastructure import session  
 
 PROJECT_NAME = os.getenv("PROJECT_NAME", "My FastAPI Project")
 VERSION = os.getenv("VERSION", "1.0.0")
@@ -30,6 +31,7 @@ async def root():
         "project": PROJECT_NAME,
         "version": VERSION,
         "status": "running",
+        "db_type": os.getenv("DB_TYPE", "sqlite")
     }
 
 # Incluir routers (ejemplo)
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         "app.main:app",
         host=os.getenv("HOST", "0.0.0.0"),
         port=int(os.getenv("PORT", 8000)),
-        reload=bool(int(os.getenv("RELOAD", 1))),
+        reload = os.getenv("RELOAD", "1") == "1",
         reload_dirs=[os.path.dirname(os.path.abspath(__file__))],
         reload_excludes=[
             "*/.git/*",
